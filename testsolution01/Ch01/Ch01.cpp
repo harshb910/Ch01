@@ -40,6 +40,7 @@ int main()
         y[i] = i * 2;
     }
     size_t size = sizeof(x);
+    // CalcZ_Cpp(z,x,y,size);
     CalcZ_Iavx(z, x, y, size);
 
     for (int i = 0; i < 10000; i++) {

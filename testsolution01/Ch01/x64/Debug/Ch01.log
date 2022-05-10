@@ -1,0 +1,4 @@
+﻿  Ch01.cpp
+E:\Visual_Studio_Community\Files\testsolution01\Ch01\Ch01.cpp(39,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\Visual_Studio_Community\Files\testsolution01\Ch01\Ch01.cpp(40,18): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Ch01.vcxproj -> E:\Visual_Studio_Community\Files\testsolution01\x64\Debug\Ch01.exe

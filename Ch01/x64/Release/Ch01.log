@@ -1,0 +1,19 @@
+﻿  Assembling Ch01_01_fasm.asm...
+  Ch01.cpp
+E:\Visual_Studio_Community\Files\testsolution01\Ch01\Ch01.cpp(49,23): warning C4244: 'initializing': conversion from '_Rep' to 'double', possible loss of data
+          with
+          [
+              _Rep=__int64
+          ]
+E:\Visual_Studio_Community\Files\testsolution01\Ch01\Ch01.cpp(56,79): warning C4244: '=': conversion from '_Rep' to 'double', possible loss of data
+          with
+          [
+              _Rep=__int64
+          ]
+E:\Visual_Studio_Community\Files\testsolution01\Ch01\Ch01.cpp(63,79): warning C4244: '=': conversion from '_Rep' to 'double', possible loss of data
+          with
+          [
+              _Rep=__int64
+          ]
+  LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+  Ch01.vcxproj -> E:\Visual_Studio_Community\Files\testsolution01\x64\Release\Ch01.exe

@@ -1,0 +1,65 @@
+Microsoft (R) Macro Assembler (x64) Version 14.29.30143.0   05/10/22 22:42:42
+Ch01_01_fasm.asm					     Page 1 - 1
+
+
+				;-------------------------------------------------
+				; Ch01_01_fasm.asm
+				;-------------------------------------------------
+				;------------------------------------------------------------------------------
+				; extern "C" void CalcZ_Aavx(float* z, const float* x, const float* x, size_t n);
+				;------------------------------------------------------------------------------
+ = 00000008			NSE equ 8										;num_simd_elements
+ 00000000			 .code
+ 00000000			CalcZ_Aavx proc
+ 00000000  48/ 33 C0		 xor rax,rax									;i = 0;
+ 00000003  4D/ 8B D1		Loop1:	mov r10,r9								;r10 = n
+ 00000006  4C/ 2B D0				sub r10,rax								;r10 = n - i
+ 00000009  49/ 83 FA 08				cmp r10,NSE								;is n - i < NSE?
+ 0000000D  72 1A				jb Loop2								;jump if yes
+				; Calculate z[i:i+7] = x[i:i+7] + y[i:i+7]
+ 0000000F  C5 FC/ 10 04 82		vmovups ymm0,ymmword ptr [rdx+rax*4]		;ymm0 = x[i:i+7]
+ 00000014  C4 C1 7C/ 10 0C		vmovups ymm1,ymmword ptr [r8+rax*4]			;ymm1 = y[i:i+7]
+	   80
+ 0000001A  C5 FC/ 58 D1			vaddps ymm2,ymm0,ymm1						;z[i:i+7] = x[i:i+7] + y[i:i+7]
+ 0000001E  C5 FC/ 11 14 81		vmovups ymmword ptr [rcx+rax*4],ymm2		;save z[i:i+7]
+
+ 00000023  48/ 83 C0 08		 add rax,NSE									;i += NSE
+ 00000027  EB DA		 jmp Loop1										;repeat Loop1 until done
+ 00000029  49/ 3B C1		Loop2: cmp rax,r9								;is i >= n?
+ 0000002C  73 19		 jae Done										;jump if yes
+				; Calculate z[i] = x[i] + y[i] for remaining elements
+ 0000002E  C5 FA/ 10 04 82	 vmovss xmm0,real4 ptr [rdx+rax*4]				;xmm0 = x[i]
+ 00000033  C4 C1 7A/ 10 0C	 vmovss xmm1,real4 ptr [r8+rax*4]				;xmm1 = y[i]
+	   80
+ 00000039  C5 FA/ 58 D1		 vaddss xmm2,xmm0,xmm1							;z[i] = x[i] + y[i]
+ 0000003D  C5 FA/ 11 14 81	 vmovss real4 ptr [rcx+rax*4],xmm2				;save z[i]
+ 00000042  48/ FF C0		 inc rax										;i += 1
+ 00000045  EB E2		 jmp Loop2										;repeat Loop2 until done
+ 00000047  C5 F8 77		Done: vzeroupper								;clear upper bits of ymm regs
+ 0000004A  C3			 ret											;return to caller
+ 0000004B			CalcZ_Aavx endp
+				 end
+Microsoft (R) Macro Assembler (x64) Version 14.29.30143.0   05/10/22 22:42:42
+Ch01_01_fasm.asm					     Symbols 2 - 1
+
+
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+CalcZ_Aavx . . . . . . . . . . .	P 	 00000000 _TEXT	Length= 0000004B Public
+  Loop1  . . . . . . . . . . . .	L 	 00000003 _TEXT	
+  Loop2  . . . . . . . . . . . .	L 	 00000029 _TEXT	
+  Done . . . . . . . . . . . . .	L 	 00000047 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+NSE  . . . . . . . . . . . . . .	Number	 00000008h   
+
+	   0 Warnings
+	   0 Errors
